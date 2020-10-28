@@ -72,3 +72,18 @@ export async function addUserToSpecificMeeting(meetingId,user){
     }
    
 }
+
+export async function addNewMeeting(meetingData){
+    console.log("services",meetingData);
+    const headers = {
+        'Authorization': localStorage.getItem('token')
+    }
+    try{
+        const response = await axios.post(`http://localhost:3000/api/meetings/add`,{meeting:meetingData},{headers:headers});
+        return response.data;
+    }
+    catch(error)
+    {
+        return error;
+    }
+}
