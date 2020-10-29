@@ -74,7 +74,7 @@ export async function addUserToSpecificMeeting(meetingId,user){
 }
 
 export async function addNewMeeting(meetingData){
-    console.log("services",meetingData);
+    //console.log("services",meetingData);
     const headers = {
         'Authorization': localStorage.getItem('token')
     }

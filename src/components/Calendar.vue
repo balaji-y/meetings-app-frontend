@@ -64,7 +64,7 @@
     
             <div class="row" v-if="status==='LOADED'">
                 
-                <div class="col-4 d-flex" v-for="meeting in meetings" :key="meeting._id">
+                <div class="col-12 my-2" v-for="meeting in meetings" :key="meeting._id">
                         <div class="card">
                             <div class="card-body">
                                 

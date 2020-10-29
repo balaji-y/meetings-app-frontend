@@ -1,42 +1,58 @@
 <template>
      <div class="m-3">
+         <div class="row" v-if="status==='CREATED'">
+                <div class="col-12">
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert"> 
+                        <strong>Team Created</strong> 
+                    </div>
+                </div>
+        </div>
+
+        <div class="row" v-if="status==='ERROR_CREATING'">
+                <div class="col-12">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{error.message}}</strong>
+                    </div>
+                </div>
+        </div>
+
 
         <div style="background-color:#1e809c">
-            <h3 style="color:white">Add a new meeting</h3>
+            <h3 style="color:white" class="mx-3">Add a new meeting</h3>
             <hr />
 
             <form class="mx-4">
                 <div class="form-group">
                     <label for="date">Date</label><br />
                     <input type="date"
-                           id="date" />
+                           id="date"  required/>
                 </div>
 
                 <div class="form-group">
                     <label for="startTime">Start Time (hh:mm)</label><br />
-                    <select id="startTimeHours">
+                    <select id="startTimeHours" required>
                         <option v-for="hour in 24" :value="hour-1" :key="hour">{{hour-1}}</option>
                     </select>
                     :
-                    <select id="startTimeMinutes">
+                    <select id="startTimeMinutes" required>
                         <option v-for="minutes in 60" :value="minutes-1" :key="minutes">{{minutes-1}}</option>
                     </select>
                 </div>
 
                  <div class="form-group">
                     <label for="endTime">End Time (hh:mm)</label><br />
-                    <select id="endTimeHours">
+                    <select id="endTimeHours" required>
                         <option v-for="hour in 24" :value="hour-1" :key="hour">{{hour-1}}</option>
                     </select>
                     :
-                    <select id="endTimeMinutes">
+                    <select id="endTimeMinutes" required>
                         <option v-for="minutes in 60" :value="minutes-1" :key="minutes">{{minutes-1}}</option>
                     </select>
                 </div>
 
                  <div class="form-group">
                     <label for="Name">Name of the Meeting</label>
-                    <input class="form-control" type="text" id="name" />
+                    <input class="form-control" type="text" id="name" required />
                 </div>
 
                 <div class="form-group">
@@ -56,9 +72,14 @@
 </template>
 
 <script>
-import { addNewMeeting, getUserId } from '../services/meetings'
+import { addNewMeeting } from '../services/meetings'
 export default {
     name:'AddMeeting',
+    data(){
+        return {
+            status: ''
+        }
+    },
     methods:{
         addMeeting(){
             const meeting = {}
@@ -71,28 +92,18 @@ export default {
             meeting.endTime.hours = +document.querySelector('#endTimeHours').value;
             meeting.endTime.minutes = +document.querySelector('#endTimeMinutes').value;
             meeting.date = document.querySelector('#date').value;
-            meeting.attendees = [];
+            meeting.attendeesEmail = [];
 
-            const attendeesList = document.querySelector('#attendees').value.split(',');
-
-            attendeesList.forEach(attendeeEmail => {
-                getUserId(attendeeEmail)
-                .then(response => {
-                    let user = {email:attendeeEmail,userId:response._id};
-                    meeting.attendees.push(user);
-                })
-                .catch(error => {
-                    console.log(error);
-                })  
-            });
-
-            console.log('meeting',meeting);
-
+            meeting.attendeesEmail = document.querySelector('#attendees').value.split(',');
+            console.log("meeting",meeting);
             addNewMeeting(meeting)
             .then(response => {
+                this.status = 'CREATED'
                 console.log(response)
             })
             .catch(error => {
+                this.error = error;
+                this.status = 'ERROR_CREATING'
                 console.log(error);
             })
 

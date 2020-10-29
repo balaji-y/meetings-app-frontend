@@ -38,6 +38,23 @@ export default new Router({
                     component: () => import("@/components/AddMeeting")
                 }
             ]
+        },
+        {
+            name:'Teams',
+            path:'/teams',
+            component: () => import('@/components/Teams'),
+            children: [
+                {
+                    name: "view-teams",
+                    path: "",
+                    component: () => import("@/components/ViewTeams")
+                },
+                {
+                    name: "add-team",
+                    path: "add",
+                    component: () => import("@/components/AddTeam")
+                }
+            ]
         }
     ]
 })

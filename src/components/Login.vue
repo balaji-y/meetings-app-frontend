@@ -37,12 +37,25 @@ export default {
 
         }
     },
+    mounted(){
+        /*if(localStorage.getItem('token'))
+        {
+            this.$router.push('calendar');
+        }*/
+    },
     methods:{
         submitDetails(){
             const email = document.querySelectorAll('#email')[0].value;
             const password = document.querySelectorAll('#password')[0].value;
 
-            generateToken(email,password);
+            generateToken(email,password)
+            .then(data => {
+                localStorage.setItem('token',data.token);
+                localStorage.setItem('email',data.email);
+            })
+            .catch(error => {
+                console.log(error);
+            })
             
         }
     }

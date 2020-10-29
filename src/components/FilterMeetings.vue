@@ -2,7 +2,7 @@
     <div class="m-3">
 
         <div style="background-color:#1e809c">
-            <h3 style="color:white">Search for Meetings</h3>
+            <h3 style="color:white" class="mx-3">Search for Meetings</h3>
             <hr />
 
             <form>
@@ -32,7 +32,47 @@
             </form>
         </div>
         
-        <div class="row mx-3 my-4">
+
+        <div class="row" v-if="status==='LOADING'">
+                <div class="col-12">
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <strong>Meetings Loading</strong> 
+                    </div>
+                </div>
+        </div>
+
+        <div class="row" v-if="status==='ERROR_LOADING'">
+                <div class="col-12">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <strong>{{error.message}}</strong>
+                    </div>
+                </div>
+        </div>
+
+
+        <div class="row" v-if="status==='LOADED' && meetings.length ===0">
+                <div class="col-12">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <strong>No Meetings Found for your Search</strong>
+                    </div>
+                </div>
+        </div>
+
+
+
+        <div class="row mx-3 my-4" v-if="status==='LOADED' && meetings.length >0">
             <div class="col-12">
                 <div class="row">
                     <h2>Meeting Matching your filter</h2>
@@ -40,7 +80,7 @@
             </div>
           <hr style="width:100%;text-align:left;margin-left:0">
             <div class="col-12">
-                <div class="row meeting-style" v-for="meeting in meetings" :key="meeting._id">
+                <div class="row meeting-style" v-for="(meeting,index) in meetings" :key="meeting._id">
                     
                     <div class="col-11">
                         <div class="row">
@@ -52,9 +92,9 @@
                             </div>
                             
                         </div>
-                        <p style="font-weight:bold">by {{meeting.name}}</p>
+                        <p style="font-weight:bold">{{meeting.name}}</p>
 
-                        <button class="btn btn-danger" type="button" @click="excuseYourself(meeting._id)">Excuse Yourself</button>
+                        <button class="btn btn-danger" type="button" @click="excuseYourself(meeting._id,index)">Excuse Yourself</button>
 
                         <hr />
                         <span>Attendees:</span>
@@ -62,36 +102,32 @@
                             {{attendee.email}}
                         </span>
 
-                        <div class = "row">
-                            <div class="col-3 m-2">
+                        <div class = "row mx-2 my-2">
                                 <select id="userToAdd">
                                     <option>Select Member</option>
-                                    <option v-for="user in users" :key="user._id" :value="user.email">
-                                        {{user.email}}
+                                    <option v-for="userEmail in getRemainingUsers(meeting.attendees)" :key="userEmail" :value="userEmail">
+                                        {{userEmail}}
                                     </option>
                                 </select>
-                            </div>
-                            <div class="col-4">
-                                <button type="button" @click="addUserToMeeting(meeting._id)" class="btn btn-primary">
+                           
+                            
+                                <button type="button" @click="addUserToMeeting(meeting._id, $event, index)" class="btn btn-primary mx-2">
                                     Add
                                 </button>
-                            </div>
+                            
                         </div>  
 
                     </div>
                 </div>
             </div>               
         </div>
-        
-
-       
-
     </div>
 </template>
 
 <script>
 
 import { fetchMeetingsForDay,getUsers,deleteUserFromMeeting,getUserId,addUserToSpecificMeeting } from '../services/meetings';
+const LOADING = 'LOADING', LOADED = 'LOADED', ERROR_LOADING = 'ERROR_LOADING';
 export default {
     name:'FilterMeetings',
     components:{
@@ -99,42 +135,61 @@ export default {
     },
     data() {
         return {
-            meetings: []
+            meetings: [],
+            status :'none'
         }
     },
     methods:{
-        excuseYourself(meetingId){
+        excuseYourself(meetingId,index){
             //console.log(meetingId);
             deleteUserFromMeeting(meetingId)
             .then(response => {
-                console.log(response.data);
-                this.searchMeetings();
+                console.log(response);
+                console.log(index);
+                if(index === 0)
+                    this.meetings = [...this.meetings.slice(1)]
+                else
+                    this.meetings = [...this.meetings.slice(0,index),...this.meetings.slice(index)]
             })
             .catch(error => {
                 console.log(error);
             })
         },
 
-        addUserToMeeting(meetingId){
-            let email = document.querySelector('#userToAdd').value;
-            let userId = ''
-            getUserId(email)
-            .then(response => {
-                userId = response._id;
-                const newUser = {userId,email};
-                addUserToSpecificMeeting(meetingId,newUser)
+        addUserToMeeting(meetingId,event,index){
+           // let email = document.querySelector('#userToAdd').value;
+            let email = event.target.parentElement.children[0].value;
+            if(email!='Select Member')
+            {   
+                let userId = ''
+                getUserId(email)
                 .then(response => {
-                    console.log(response.data);
-                    this.searchMeetings();
+                    userId = response._id;
+                    const newUser = {userId,email};
+                    addUserToSpecificMeeting(meetingId,newUser)
+                    .then(response => {
+                        console.log("response",response);
+                        if(index === 0)
+                            this.meetings = [response,...this.meetings.slice(1)]
+                        else
+                            this.meetings = [...this.meetings.slice(0,index),response,...this.meetings.slice(index)]
+                    })
+                    .catch(error =>{
+                        console.log(error);
+                     })
                 })
-                .catch(error =>{
-                    console.log(error);
-                })
-            })
-            .catch(error=> {
-                console.log(error);
-            });
- 
+
+            }
+            
+        },
+
+        getRemainingUsers(attendees)
+        {  
+            const attendeesEmail = attendees.map(attendee => attendee.email);
+            const allUsersEmail = this.users.map(user => user.email);
+           
+            const result = allUsersEmail.filter(x => !attendeesEmail.includes(x));
+            return result;
         },
 
         getDate(date){
@@ -143,14 +198,18 @@ export default {
         },
         
         searchMeetings(){
+            this.status = LOADING;
             const date = document.querySelector('#dateSelected').value;
             const searchTerm = document.querySelector('#searchTerm').value;
             fetchMeetingsForDay(date,searchTerm)
             .then(meetings => {
+                this.status = LOADED;
                 this.meetings = meetings;
-                console.log(this.meetings);
+                //console.log(this.meetings);
             })
             .catch(error => {
+                this.status = ERROR_LOADING;
+                this.error = error;
                 console.log(error);
             })
         }

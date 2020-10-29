@@ -7,6 +7,9 @@
             <li class="nav-item">
                 <router-link class="nav-link" to="/meetings">Meetings</router-link>
             </li>
+            <li class="nav-item">
+                <router-link class="nav-link" to="/teams">Teams</router-link>
+            </li>
         </ul>
     </nav>
 </template>
