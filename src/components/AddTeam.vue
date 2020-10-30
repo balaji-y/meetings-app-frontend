@@ -3,7 +3,7 @@
          <div class="row" v-if="status==='CREATED'">
                 <div class="col-12">
                     <div class="alert alert-primary alert-dismissible fade show" role="alert"> 
-                        <strong>Meeting Created</strong> 
+                        <strong>Team Created</strong> 
                     </div>
                 </div>
         </div>

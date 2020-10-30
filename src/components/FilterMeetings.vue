@@ -146,10 +146,10 @@ export default {
             .then(response => {
                 console.log(response);
                 console.log(index);
-                if(index === 0)
-                    this.meetings = [...this.meetings.slice(1)]
-                else
-                    this.meetings = [...this.meetings.slice(0,index),...this.meetings.slice(index)]
+                // if(index === 0)
+                //     this.meetings = [...this.meetings.slice(1)]
+                // else
+                this.meetings = [...this.meetings.slice(0,index),...this.meetings.slice(index+1)]
             })
             .catch(error => {
                 console.log(error);
@@ -169,10 +169,10 @@ export default {
                     addUserToSpecificMeeting(meetingId,newUser)
                     .then(response => {
                         console.log("response",response);
-                        if(index === 0)
-                            this.meetings = [response,...this.meetings.slice(1)]
-                        else
-                            this.meetings = [...this.meetings.slice(0,index),response,...this.meetings.slice(index)]
+                        // if(index === 0)
+                        //     this.meetings = [response,...this.meetings.slice(1)]
+                        // else
+                        this.meetings = [...this.meetings.slice(0,index),response,...this.meetings.slice(index+1)]
                     })
                     .catch(error =>{
                         console.log(error);

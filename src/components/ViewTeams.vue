@@ -114,10 +114,10 @@ export default {
             removeUserFromTeam(teamId)
             .then(response => {
                 console.log(response);
-                if(index === 0)
-                    this.teams = [...this.teams.slice(1)]
-                else
-                    this.teams = [...this.teams.slice(0,index),...this.teams.slice(index)]
+                // if(index === 0)
+                //     this.teams = [...this.teams.slice(1)]
+                // else
+                this.teams = [...this.teams.slice(0,index),...this.teams.slice(index+1)]
             })
             .catch(error => {
                 console.log(error);
@@ -145,10 +145,10 @@ export default {
                     addUserToTeam(teamId,newUser)
                     .then(response => {
                         console.log("response",response);
-                        if(index === 0)
-                            this.teams = [response,...this.teams.slice(1)]
-                        else
-                             this.teams = [...this.teams.slice(0,index),response,...this.teams.slice(index)]
+                        // if(index === 0)
+                        //     this.teams = [response,...this.teams.slice(1)]
+                        // else
+                        this.teams = [...this.teams.slice(0,index),response,...this.teams.slice(index+1)]
                     })
                     .catch(error =>{
                         console.log(error);

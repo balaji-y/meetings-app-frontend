@@ -14,7 +14,16 @@ export async function getTeamsForUser(){
 }
 
 export async function addNewTeam(team){
-    console.log(team);
+    const headers = {
+        'Authorization': localStorage.getItem('token')
+    }
+    try{
+        const response = await axios.post(`http://localhost:3000/api/teams/add`,{team:team},{headers});
+        return response.data;
+    }
+    catch(error){
+        return error;
+    }
 
 }
 

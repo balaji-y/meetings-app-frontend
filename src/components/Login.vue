@@ -1,14 +1,25 @@
 <template>
     <div>
-        <h2>Login Page</h2>
-        <form>
+        <div class="row">
+            <div class="col-4">
+                <h2>Login</h2>
+            </div>
+            <div class="col-4">
+            </div>
+            <div class="col-4">
+                <router-link to="/signup"><button class="btn btn-primary">Create a New Account</button></router-link>
+            </div>
+        </div>
+        <form id="form" @submit="submitForm">
+            
             <div class="form-group">
                 <label for="email">Email</label>
                 <input class="form-control"
                        type="email" 
                        id="email"
+                       v-model="email"
+                       name="email"
                        placeholder="Enter your Email Id" 
-                       name="email" 
                        required />
             </div>
 
@@ -17,14 +28,17 @@
                 <input class="form-control"
                        id="password"
                        type="password" 
+                       v-model="password"
                        placeholder="Enter your Password" 
                        name="password" 
                        required />
             </div>
 
-            <button type="button" class="btn btn-primary" @click="submitDetails">Login</button>
+            <input type="submit" value="Login" class="btn btn-primary" />
 
         </form>
+
+        
     </div>
 </template>
 
@@ -34,7 +48,9 @@ export default {
     name:'Login',
     data(){
         return {
-
+            error:'',
+            email:'',
+            password:''
         }
     },
     mounted(){
@@ -44,20 +60,20 @@ export default {
         }*/
     },
     methods:{
-        submitDetails(){
-            const email = document.querySelectorAll('#email')[0].value;
-            const password = document.querySelectorAll('#password')[0].value;
 
-            generateToken(email,password)
-            .then(data => {
-                localStorage.setItem('token',data.token);
-                localStorage.setItem('email',data.email);
-            })
-            .catch(error => {
-                console.log(error);
-            })
-            
+        submitForm(e){
+           e.preventDefault();
+           generateToken(this.email,this.password)
+           .then(response => {
+               //console.log(response.status);
+               localStorage.setItem('token',response.data.token);
+               localStorage.setItem('email',response.data.email);
+           })
+           .catch(error=> {
+               this.error = error;
+           })
         }
     }
+        
 }
 </script>

@@ -18,6 +18,11 @@ export default new Router({
             component: () => import('@/components/Login')
         },
         {
+            name:'Signup',
+            path:'/signup',
+            component: () => import('@/components/Signup')
+        },
+        {
             name:'Calendar',
             path:'/calendar',
             component: () => import('@/components/Calendar')
