@@ -60,6 +60,11 @@ export default new Router({
                     component: () => import("@/components/AddTeam")
                 }
             ]
+        },
+        {
+            name:'Logout',
+            path:'/logout',
+            component: ()=> import('@/components/Logout')
         }
     ]
 })

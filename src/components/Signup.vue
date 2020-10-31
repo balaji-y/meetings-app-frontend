@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="row">
+    <div class="container">
+        <div class="row my-5">
             <div class="col-4">
                 <h2>Signup</h2>
             </div>

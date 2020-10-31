@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="row">
+    <div class="container">
+        <div class="row my-5">
             <div class="col-4">
                 <h2>Login</h2>
             </div>
@@ -54,10 +54,10 @@ export default {
         }
     },
     mounted(){
-        /*if(localStorage.getItem('token'))
+        if(localStorage.getItem('token'))
         {
             this.$router.push('calendar');
-        }*/
+        }
     },
     methods:{
 
@@ -68,6 +68,7 @@ export default {
                //console.log(response.status);
                localStorage.setItem('token',response.data.token);
                localStorage.setItem('email',response.data.email);
+               this.$router.push('/calendar');
            })
            .catch(error=> {
                this.error = error;

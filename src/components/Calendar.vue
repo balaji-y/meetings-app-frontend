@@ -1,5 +1,7 @@
 <template>
     <div>
+        <Navbar />
+        <div class="container my-2">
             <div class="row">
                 <div class="col-12 clearfix">
                     <h1>
@@ -83,15 +85,20 @@
                 </div>
             </div>
     
+        </div>
     </div>
 </template>
 
 <script>
+import Navbar from './Navbar';
 import { fetchMeetingsForDay } from '../services/meetings';
 const LOADING = 'LOADING', LOADED = 'LOADED', ERROR_LOADING = 'ERROR_LOADING';
 
 export default {
     name:'Calendar',
+    components:{
+        Navbar
+    },
     data(){
         return {
             status:LOADING,
@@ -119,7 +126,14 @@ export default {
     },
 
     mounted(){
-        this.fetchMeetingsForDay();
+        if(localStorage.getItem('token'))
+        {
+            this.fetchMeetingsForDay();
+        }
+        else{
+            this.$router.push('/login');
+        }
+        
     }
 }
 </script>

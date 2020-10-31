@@ -3,7 +3,7 @@
          <div class="row" v-if="status==='CREATED'">
                 <div class="col-12">
                     <div class="alert alert-primary alert-dismissible fade show" role="alert"> 
-                        <strong>Team Created</strong> 
+                        <strong>Meeting Created</strong> 
                     </div>
                 </div>
         </div>
@@ -94,7 +94,7 @@ export default {
             meeting.date = document.querySelector('#date').value;
             meeting.attendeesEmail = [];
 
-            meeting.attendeesEmail = document.querySelector('#attendees').value.split(',');
+            meeting.attendeesEmail = document.querySelector('#attendees').value;
             console.log("meeting",meeting);
             addNewMeeting(meeting)
             .then(response => {

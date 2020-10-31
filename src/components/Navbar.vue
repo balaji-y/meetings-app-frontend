@@ -10,6 +10,9 @@
             <li class="nav-item">
                 <router-link class="nav-link" to="/teams">Teams</router-link>
             </li>
+            <li class="nav-item">
+                <router-link class="nav-link" to="/logout">Logout</router-link>
+            </li>
         </ul>
     </nav>
 </template>
