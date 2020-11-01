@@ -5,6 +5,15 @@
 
 <script>
 export default {
-    name:'Home'
+    name:'Home',
+    mounted(){
+        if(localStorage.getItem('token'))
+        {
+            this.$router.push('calendar');
+        }
+        else{
+            this.$router.push('login');
+        }
+    }
 }
 </script>

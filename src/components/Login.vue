@@ -11,7 +11,10 @@
             </div>
         </div>
         <form id="form" @submit="submitForm">
-            
+            <div class="form-group" v-if="error">
+                <button class="btn btn-danger">{{error}}</button>
+            </div>
+
             <div class="form-group">
                 <label for="email">Email</label>
                 <input class="form-control"
@@ -65,13 +68,14 @@ export default {
            e.preventDefault();
            generateToken(this.email,this.password)
            .then(response => {
+               this.error = '';
                //console.log(response.status);
                localStorage.setItem('token',response.data.token);
                localStorage.setItem('email',response.data.email);
                this.$router.push('/calendar');
            })
            .catch(error=> {
-               this.error = error;
+               this.error = error.response.data.message;
            })
         }
     }

@@ -25,9 +25,17 @@
                 </div>
             </div>
 
+             <div class="row" v-if="status==='LOADED' && teams.length === 0">
+                <div class="col-12">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>You are not part of any Teams</strong>
+                    </div>
+                </div>
+            </div>
+
 
     
-            <div class="row my-5" v-if="status==='LOADED'">
+            <div class="row my-5" v-if="status==='LOADED' && teams.length > 0">
                 <div class="col-4 d-flex" v-for="(team,index) in teams" :key="team._id">
                     
                         <div class="card">

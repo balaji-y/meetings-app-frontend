@@ -10,9 +10,12 @@
                 <router-link to="/login"><button class="btn btn-primary">Click here to Login</button></router-link>
             </div>
         </div>
-        <button class="btn btn-danger" disabled v-if="error">{{error}}</button>
+        
         <button class="btn btn-success" disabled v-if="success">{{success}}</button>
         <form id="form" @submit="submitForm">
+            <div class="form-group" v-if="error">
+                <button class="btn btn-danger">{{error}}</button>
+            </div>
             <div class="form-group">
                 <label for="name">Name</label>
                 <input class="form-control"
@@ -94,46 +97,24 @@ export default {
                 //console.log(user);
                 registerUser(user)
                     .then(response =>{
-                        console.log(response.status);
                         if(response.status === 204)
                         {
+                            console.log(response.data);
                             this.success = 'Successfully Registered';
                             this.error = '';
+                            this.name = '';
+                            this.email = '';
+                            this.password = '';
+                            this.confirmPassword = '';
                             return;
-                        }
-                        else
-                        {
-                            this.error = 'Email already exists!! Try again';
-                            this.success = '';
-                            return;
-                           // console.log(response);
-                        }
+                        }    
                     })
                     .catch(error => {
-                        console.log(error);
-                    })
-
-              /*  checkUser(user.email)
-                .then(result =>{
-                    if(result === true)
-                    {
-                        user.password = this.password;
-                        console.log(user);
-                        registerUser(user)
-                        .then(response =>{
-                            this.success = 'Successfully Registered';
-                            console.log(response);
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        })
-                    }
-                    else{
-                        this.error = 'Email Id already exists!! Try again'
-                    }
-                })*/
-
-                
+                        if(error.response.data.message.includes('duplicate key error'))
+                        {
+                            this.error = 'Email already exists! Try with another Email'
+                        }
+                    })    
             }
         }
     }
