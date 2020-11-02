@@ -20,7 +20,7 @@
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only">Close</span>
                         </button>
-                        <strong>{{error.message}}</strong>
+                        <strong>{{error}}</strong>
                     </div>
                 </div>
             </div>
@@ -129,6 +129,7 @@ export default {
             })
             .catch(error => {
                 console.log(error);
+                this.error = error.response.data.message;
             })
         },
         getRemainingUsers(members)
@@ -160,7 +161,11 @@ export default {
                     })
                     .catch(error =>{
                         console.log(error);
+                        this.error = error.response.data.message;
                      })
+                })
+                .catch(error => {
+                    this.error = error.response.data.message;
                 })
 
             }

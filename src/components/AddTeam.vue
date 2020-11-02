@@ -17,33 +17,33 @@
         </div>
 
 
-        <div>
-            <h3 style="color:black" class="mx-3">Add a new Team</h3>
+        <div style="background-color:#1e809c">
+            <h3 style="color:white" class="mx-3">Add a new Team</h3>
             <hr />
 
-            <form class="mx-4">
+            <form class="mx-4" @submit="addTeam">
                 <div class="form-group">
                     <label for="name">Name</label><br />
-                    <input type="text" id="name" class="form-control"  required/>
+                    <input type="text" id="name" class="form-control" v-model="name" required/>
                 </div>
 
 
                  <div class="form-group">
                     <label for="shortName">Short Name</label>
-                    <input class="form-control" type="text" id="shortName" required />
+                    <input class="form-control" type="text" id="shortName" v-model="shortName" required />
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <input type="text" class="form-control" id="description" required />
+                    <input type="text" class="form-control" id="description" v-model="description" required />
                 </div>
 
                 <div class="form-group">
                     <label for="attendees">Email Ids of Members</label>
-                    <input class="form-control" type="text" id="members" />
+                    <input class="form-control" type="text" v-model="membersEmail" id="members" />
                 </div>
 
-                <button type="button" class="btn btn-primary my-2" @click="addTeam">Add Team</button>
+                <input type="submit" class="btn btn-primary my-2" value="Add Team"/>
             </form>
         </div>
     </div>
@@ -55,17 +55,24 @@ export default {
     name:'AddTeam',
     data() {
         return {
-            status:''
+            status:'',
+            name:'',
+            shortName:'',
+            description:'',
+            membersEmail:''
         }
     },
     methods:{
-        addTeam(){
+        addTeam(e){
+            e.preventDefault();
             const team = {}
-            team.name = document.querySelector('#name').value;
-            team.shortName = document.querySelector('#shortName').value;
-            team.description = document.querySelector('#description').value;
+
+            team.name = this.name;
+            team.shortName = this.shortName;
+            team.description = this.description;
             team.membersEmail = [];
-            team.membersEmail = document.querySelector('#members').value.split(',');
+            team.membersEmail = this.membersEmail.split(',')
+
             console.log("team",team);
             addNewTeam(team)
             .then(response => {

@@ -10,7 +10,8 @@ export async function fetchMeetingsForDay(date,description=''){
     }
     catch(error)
     {
-        return error;
+        console.log(error);
+        throw error;
     }  
 }
 
@@ -24,7 +25,8 @@ export async function getUsers(){
     }
     catch(error)
     {
-        return error
+        console.log(error);
+        throw error;
     }
 }
 
@@ -38,7 +40,8 @@ export async function getUserId(email){
     }
     catch(error)
     {
-        return error
+        console.log(error);
+        throw error;
     }
 }
 
@@ -52,7 +55,8 @@ export async function deleteUserFromMeeting(meetingId){
     }
     catch(error)
     {
-        return error;
+        console.log(error);
+        throw error;
     }
 }
 
@@ -68,7 +72,8 @@ export async function addUserToSpecificMeeting(meetingId,user){
     }
     catch(error)
     {
-        return error;
+        console.log(error);
+        throw error;
     }
    
 }
@@ -84,6 +89,7 @@ export async function addNewMeeting(meetingData){
     }
     catch(error)
     {
-        return error;
+        console.log(error);
+        throw error;
     }
 }

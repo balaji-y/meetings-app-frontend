@@ -10,6 +10,7 @@
                     <label for="date">Date</label>
                     <select id="dateSelected" 
                             class="form-control"
+                            
                             required>
                         <option>TODAY</option>
                         <option>PAST</option>
@@ -85,10 +86,40 @@
                     <div class="col-11">
                         <div class="row">
                             <div class="col-4">
-                                <h6>{{meeting.date}} </h6>
+                                <h6>{{meeting.date.substr(0,10)}} </h6>
                             </div>
                             <div class="col-4">
-                                <p>{{meeting.startTime.hours}}:{{meeting.startTime.minutes}} - {{meeting.endTime.hours}}:{{meeting.endTime.minutes}}</p>
+                                <p>
+                                    <b>
+                                    <span v-if="meeting.startTime.hours<10">
+                                        0{{meeting.startTime.hours}}:
+                                    </span>
+                                    <span v-else>
+                                        {{meeting.startTime.hours}}:
+                                    </span>
+
+                                    <span v-if="meeting.startTime.minutes<10">
+                                        0{{meeting.startTime.minutes}}-
+                                    </span>
+                                    <span v-else>
+                                        {{meeting.startTime.minutes}}-
+                                    </span>
+
+                                    <span v-if="meeting.endTime.hours<10">
+                                        0{{meeting.endTime.hours}}:
+                                    </span>
+                                    <span v-else>
+                                        {{meeting.endTime.hours}}:
+                                    </span>
+
+                                    <span v-if="meeting.endTime.minutes<10">
+                                        0{{meeting.endTime.minutes}}
+                                    </span>
+                                    <span v-else>
+                                        {{meeting.endTime.minutes}}
+                                    </span>
+                                    </b>
+                                </p>
                             </div>
                             
                         </div>
@@ -97,8 +128,8 @@
                         <button class="btn btn-danger" type="button" @click="excuseYourself(meeting._id,index)">Excuse Yourself</button>
 
                         <hr />
-                        <span>Attendees:</span>
-                        <span v-for="attendee in meeting.attendees" :key="attendee._id">
+                        <span><b>Attendees:</b></span>
+                        <span v-for="attendee in meeting.attendees" :key="attendee._id" class="bg-success px-1 m-1 py-0.9 text-white rounded">
                             {{attendee.email}}
                         </span>
 
@@ -136,7 +167,8 @@ export default {
     data() {
         return {
             meetings: [],
-            status :'none'
+            status :'none',
+            error:''
         }
     },
     methods:{

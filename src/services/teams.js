@@ -9,7 +9,8 @@ export async function getTeamsForUser(){
     }
     catch(error)
     {
-        return error;
+        console.log(error);
+        throw error;
     }
 }
 
@@ -22,7 +23,8 @@ export async function addNewTeam(team){
         return response.data;
     }
     catch(error){
-        return error;
+        console.log(error);
+        throw error;
     }
 
 }
@@ -38,7 +40,8 @@ export async function removeUserFromTeam(teamId){
     }
     catch(error)
     {
-        return error;
+        console.log(error);
+        throw error;
     }
 }
 
@@ -53,7 +56,8 @@ export async function addUserToTeam(teamId,users){
     }
     catch(error)
     {
-        return error;
+        console.log(error);
+        throw error;
     }
    
 }

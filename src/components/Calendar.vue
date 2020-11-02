@@ -73,7 +73,37 @@
                                 <h4 class="card-title">{{meeting.name}}</h4>
                                 <div class="card-text">
                                      <div>
-                                        {{meeting.startTime.hours}}:{{meeting.startTime.minutes}}  -  {{meeting.endTime.hours}}:{{meeting.endTime.minutes}}
+                                        <p>
+                                            <b>
+                                            <span v-if="meeting.startTime.hours<10">
+                                                0{{meeting.startTime.hours}}:
+                                            </span>
+                                            <span v-else>
+                                                {{meeting.startTime.hours}}:
+                                            </span>
+
+                                            <span v-if="meeting.startTime.minutes<10">
+                                                0{{meeting.startTime.minutes}} -
+                                            </span>
+                                            <span v-else>
+                                                {{meeting.startTime.minutes}} -
+                                            </span>
+
+                                            <span v-if="meeting.endTime.hours<10">
+                                                0{{meeting.endTime.hours}}:
+                                            </span>
+                                            <span v-else>
+                                                {{meeting.endTime.hours}}:
+                                            </span>
+
+                                            <span v-if="meeting.endTime.minutes<10">
+                                                0{{meeting.endTime.minutes}}
+                                            </span>
+                                            <span v-else>
+                                                {{meeting.endTime.minutes}}
+                                            </span>
+                                            </b>
+                                        </p>
                                     </div>
                                     <div>
                                         <span>{{meeting.description}}</span>
@@ -117,6 +147,14 @@ export default {
             .then(meetings => {
                 this.status = LOADED;
                 this.meetings = meetings;
+                // this.meetings.sort((a,b)=>{
+                //     return a.startTime.hours >   b.startTime.hours;
+                // })
+                // console.log(meetings);
+                // this.meetings = this.meetings.sort((a,b)=>{
+                //     a.startTime.hours < b.startTime.hours
+                // })
+                // console.log(this.meetings);
             })
             .catch(error => {
                 this.status = ERROR_LOADING;
