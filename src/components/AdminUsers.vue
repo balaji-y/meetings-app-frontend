@@ -55,6 +55,11 @@ export default {
     },
     data(){
         return {
+            editedIndex:-1,
+            editedItem:{
+                name:'',
+                email:''
+            },
             search:'',
             headers:[
                 {text:'Id',value:'_id'},
@@ -64,6 +69,24 @@ export default {
             ],
             users:[]
         }
+    },
+    methods:{
+    editItem (item) {
+      this.editedIndex = this.users.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
+    },
+
+    deleteItem (item) {
+      this.editedIndex = this.userss.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogDelete = true
+    },
+
+    deleteItemConfirm () {
+      this.users.splice(this.editedIndex, 1)
+      this.closeDelete()
+    },
     },
     mounted(){
         getAllUsers()
