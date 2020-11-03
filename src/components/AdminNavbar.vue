@@ -2,13 +2,13 @@
     <nav class="navbar navbar-expand navbar-dark bg-dark">
         <ul class="nav navbar-nav mr-auto">
             <li class="nav-item">
-                <router-link class="nav-link" to="/calendar">Calendar</router-link>
+                <router-link class="nav-link" to="/admin-users">Users</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" to="/meetings">Meetings</router-link>
+                <router-link class="nav-link" to="/admin-meetings">Meetings</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" to="/teams">Teams</router-link>
+                <router-link class="nav-link" to="/admin-teams">Teams</router-link>
             </li>
             
         </ul>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-    name:'Navbar',
+    name:'AdminNavbar',
     data(){
         return {
             email:localStorage.getItem('email')

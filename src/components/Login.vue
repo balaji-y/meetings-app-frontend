@@ -70,10 +70,17 @@ export default {
            generateToken(this.email,this.password)
            .then(response => {
                this.error = '';
-               //console.log(response.status);
                localStorage.setItem('token',response.data.token);
                localStorage.setItem('email',response.data.email);
-               this.$router.push('/calendar');
+               //console.log(response.data.role);
+               if(response.data.role === 1)
+               {
+                   this.$router.push('/admin-users');
+               }
+               else{
+                   this.$router.push('/calendar');
+               }
+               
            })
            .catch(error=> {
                this.error = error.response.data.message;

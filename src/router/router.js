@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-
+import {isAuthenticated} from '../services/authenticate'
 
 Vue.use(Router);
 
-export default new Router({
+const router =  new Router({
     mode:'history',
     routes: [
         {
@@ -65,6 +65,32 @@ export default new Router({
             name:'Logout',
             path:'/logout',
             component: ()=> import('@/components/Logout')
-        }
+        },
+        {
+            name:'admin-users',
+            path:'/admin-users',
+            component: () => import('@/components/AdminUsers')
+        },
+        {
+            name:'admin-meetings',
+            path:'/admin-meetings',
+            component: () => import('@/components/AdminMeetings')
+        },
+        {
+            name:'admin-teams',
+            path:'/admin-teams',
+            component: () => import('@/components/AdminTeams')
+        },
     ]
+});
+
+router.beforeEach((to,from,next) => {
+    if(to.name!=='Login' && to.name!=='Signup' && !isAuthenticated()){
+        next({name:'Login'})
+    } 
+    else{
+        next()
+    }
 })
+
+export default router;
